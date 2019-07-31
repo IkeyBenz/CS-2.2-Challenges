@@ -13,7 +13,7 @@ class Graph:
         """ Initializes a graph object with an empty dictionary """
         self.vertices = {}
         self.num_vertices = 0
-        self.directional = g_type == 'd'
+        self.directional = g_type in ['d', 'D']
         self.edges = []
 
     def add_vertex(self, key):
@@ -39,6 +39,9 @@ class Graph:
             self.add_vertex(end)
 
         self.get_vertex(start).add_neighbor(end, cost)
+        if not self.directional:
+            self.get_vertex(end).add_neighbor(start, cost)
+
         self.edges.append((start, end, cost))
 
     def get_vertices(self):
@@ -90,12 +93,12 @@ class Graph:
             seen = {start}
 
         vert = self.vertices[start]
-        visit(vert)
+        yield vert
 
         for neighbor in vert.get_neighbors():
             if neighbor not in seen:
                 if neighbor is end:
-                    return visit(self.vertices[end])
+                    yield self.vertices[end]
                 else:
                     seen.add(neighbor)
                     return self.depth_first_traversal(neighbor, end, visit, seen)

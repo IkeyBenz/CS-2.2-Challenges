@@ -3,7 +3,6 @@ from sys import argv
 
 if __name__ == '__main__':
     assert argv[1] is not None, "Data file path is required."
-
     assert argv[2] is not None, "'From' vertex is required."
     assert argv[3] is not None, "'To' vertex is required."
 
