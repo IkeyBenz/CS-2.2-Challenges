@@ -17,7 +17,5 @@ if __name__ == '__main__':
 
     path = graph.shortest_path_between(start, stop)
 
-    print(path)
-
-    print(f"Vertices in shortest path: {','.join(path)}")
+    print(f"Vertices in shortest path: {','.join(list(map(str, path)))}")
     print(f"Number of edges in shortest path: {len(path) - 1}")

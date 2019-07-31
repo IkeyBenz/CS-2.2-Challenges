@@ -102,7 +102,7 @@ class Graph:
 
     def __iter__(self):
         """
-        Iterates over the vertex objects in the graph.
-        Allows sytax: for v in g
+            Iterates over the vertex objects in the graph.
+            Allows sytax: for v in g
         """
         return iter(self.vertices.values())
