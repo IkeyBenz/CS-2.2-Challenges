@@ -17,3 +17,7 @@ class GraphTests(unittest.TestCase):
         expected_path = [1, 2, 3]
 
         assert actual_path == expected_path
+
+    def test_depth_first_search(self):
+        graph = file_to_graph("graph_data3.txt")
+        # actual_order = [v for v in graph.depth_first_traversal(1)]
