@@ -4,11 +4,9 @@ from graph import Graph
 def file_to_graph(file_path):
     lines = open(file_path).read().splitlines()
 
-    g_type, vertices, edges = lines[0], lines[1], lines[2:]
+    g_type, _, edges = lines[0], lines[1], lines[2:]
 
     graph = Graph(g_type)
-    for vertex in vertices.split(','):
-        graph.add_vertex(vertex)
 
     for edge in map(string_to_tuple, edges):
         graph.add_edge(*edge)

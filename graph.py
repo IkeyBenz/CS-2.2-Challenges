@@ -34,11 +34,11 @@ class Graph:
     def add_edge(self, start, end, cost=0):
         """ Adds an edge from vertex f to vertex t with a cost """
         if start not in self.vertices:
-            self.vertices[start] = Vertex(start)
+            self.add_vertex(start)
         if end not in self.vertices:
-            self.vertices[end] = Vertex(end)
+            self.add_vertex(end)
 
-        self.vertices[start].add_neighbor(self.vertices[end], cost)
+        self.get_vertex(start).add_neighbor(end, cost)
         self.edges.append((start, end, cost))
 
     def get_vertices(self):
@@ -46,21 +46,39 @@ class Graph:
 
         return self.vertices.keys()
 
-    def breadth_first_traversal(self, start, visit):
+    def breadth_first_traversal(self, start):
         """
-           Uses breadth first search to find the shortest path
-           between two vertices.
+           Returns a generator of vertices in breadth-first order
+           from a start vertex
         """
 
         queue = [start]  # A 'queue' for storing vertices to check later
         seen = {start}  # A set of all the seen vertices
 
+        yield start
         while len(queue):
-            for vertice in self.vertices[queue.pop(0)].get_neighbors():
-                if vertice not in seen:
-                    visit(vertice)
-                    seen.add(vertice)
-                    queue.append(vertice)
+            for vertex in self.vertices[queue.pop(0)].get_neighbors():
+                if vertex not in seen:
+                    yield vertex
+                    seen.add(vertex)
+                    queue.append(vertex)
+
+    def shortest_path_between(self, start, end):
+        """
+            Returns a list of vertices that represent the shortest path
+            between start and end vertices.
+        """
+        path = [start]
+        start_neighbors = list(self.vertices[start].get_neighbors())
+
+        if end in start_neighbors:
+            return path + [end]
+        else:
+            # Arbitrarily pick the first vertex in list of neighbors as next link in path
+            the_rest = self.shortest_path_between(start_neighbors[0], end)
+            path.extend(the_rest)
+
+        return path
 
     def depth_first_traversal(self, start, end, visit, seen=None):
         """
