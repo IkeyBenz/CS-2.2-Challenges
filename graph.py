@@ -66,22 +66,33 @@ class Graph:
                     seen.add(vertex)
                     queue.append(vertex)
 
+    def reduce_redundancy(self, f):
+        vals = {}
+
+        def wrapper(x):
+            if x in vals:
+                return vals[x]
+            vals[x] = f(x)
+            return vals[x]
+        return wrapper
+
     def shortest_path_between(self, start, end):
         """
             Returns a list of vertices that represent the shortest path
             between start and end vertices.
         """
-        path = [start]
-        start_neighbors = list(self.vertices[start].get_neighbors())
+        seen = {start: [start]}
+        queue = []
+        while len(queue):
+            vertex = queue.pop()
+            for neighbor in self.get_vertex(vertex).get_neighbors():
+                if neighbor not in seen:
+                    seen[neighbor] = seem[vertex] + [neighbor]
+                    if neighbor == end:
+                        return seen[neighbor]
+                    queue.insert(neighbor, 0)
 
-        if end in start_neighbors:
-            return path + [end]
-        else:
-            # Arbitrarily pick the first vertex in list of neighbors as next link in path
-            the_rest = self.shortest_path_between(start_neighbors[0], end)
-            path.extend(the_rest)
-
-        return path
+        return None
 
     def depth_first_traversal(self, start, end, visit, seen=None):
         """
